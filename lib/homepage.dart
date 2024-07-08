@@ -7,7 +7,7 @@ import 'package:flutter_weather_app/weather.dart';
 import 'package:flutter_weather_app/temp_converter.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               iconSize: 30,
               color: Colors.white,
-              tooltip: 'swap units',
+              tooltip: 'Swap units',
               splashRadius: 20,
               icon: Icon(Icons.autorenew),
               onPressed: () {
@@ -45,25 +45,23 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: Container(
-          color: Colors.grey.shade300,
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              _buildSearchWidget(),
-              const SizedBox(height: 20),
-              TemperatureConverter(),
-              const SizedBox(height: 20),
-              if (inProgress)
-                CircularProgressIndicator()
-              else
-                Expanded(
-                  child: SingleChildScrollView(
-                    child:
-                        WeatherWidget(response: response, isCelsius: isCelsius),
-                  ),
-                ),
-            ],
+        body: SingleChildScrollView(
+          child: Container(
+            color: Colors.grey.shade300,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildSearchWidget(),
+                const SizedBox(height: 20),
+                TemperatureConverter(),
+                const SizedBox(height: 20),
+                if (inProgress)
+                  Center(child: CircularProgressIndicator())
+                else
+                  WeatherWidget(response: response, isCelsius: isCelsius),
+              ],
+            ),
           ),
         ),
       ),
