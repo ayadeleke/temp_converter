@@ -24,11 +24,23 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Lite Weather App",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold)),
+          title: GestureDetector(
+            onTap: () {
+              // Reset to initial state
+              setState(() {
+                response = null;
+                inProgress = false;
+                message =
+                    "Please search for a valid location to get weather data";
+                isCelsius = true;
+              });
+            },
+            child: Text("Lite Weather App",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold)),
+          ),
           backgroundColor: Colors.blue.shade800,
           actions: [
             IconButton(

@@ -64,7 +64,7 @@ class WeatherWidget extends StatelessWidget {
               Text(
                 (response?.current?.condition?.text.toString() ?? ""),
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: FontWeight.w500,
                 ),
               ),
