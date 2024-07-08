@@ -24,7 +24,26 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Weather App"),
+          title: Text("Lite Weather App",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold)),
+          backgroundColor: Colors.blue.shade800,
+          actions: [
+            IconButton(
+              iconSize: 30,
+              color: Colors.white,
+              tooltip: 'swap units',
+              splashRadius: 20,
+              icon: Icon(Icons.autorenew),
+              onPressed: () {
+                setState(() {
+                  isCelsius = !isCelsius;
+                });
+              },
+            ),
+          ],
         ),
         body: Container(
           color: Colors.grey.shade300,
