@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/api.dart';
 import 'package:flutter_weather_app/weathermodel.dart';
@@ -18,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   bool inProgress = false;
   String message = "Please search for a valid location to get weather data";
   bool isCelsius = true;
+  TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,21 +24,15 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: GestureDetector(
-            onTap: () {
-              // Reset to initial state
-              setState(() {
-                response = null;
-                inProgress = false;
-                message =
-                    "Please search for a valid location to get weather data";
-                isCelsius = true;
-              });
-            },
-            child: Text("Lite Weather App",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold)),
+            onTap: () => resetAppState(),
+            child: Text(
+              "Lite Weather App",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           backgroundColor: Colors.blue.shade800,
           actions: [
@@ -49,11 +42,9 @@ class _HomePageState extends State<HomePage> {
               tooltip: 'Swap units',
               splashRadius: 20,
               icon: Icon(Icons.autorenew),
-              onPressed: () {
-                setState(() {
-                  isCelsius = !isCelsius;
-                });
-              },
+              onPressed: () => setState(() {
+                isCelsius = !isCelsius;
+              }),
             ),
           ],
         ),
@@ -64,7 +55,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _buildSearchWidget(),
+                buildSearchWidget(),
                 const SizedBox(height: 20),
                 TemperatureConverter(),
                 const SizedBox(height: 20),
@@ -80,16 +71,43 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSearchWidget() {
-    return SearchBar(
-      hintText: "Search any location",
-      onSubmitted: (value) {
-        _getWeatherData(value);
-      },
+  Widget buildSearchWidget() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: textController,
+            onSubmitted: (value) => _getWeatherData(value),
+            decoration: InputDecoration(
+              hintText: "Search any location",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.symmetric(horizontal: 16),
+            ),
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.send),
+          onPressed: () => _getWeatherData(textController.text),
+        ),
+      ],
     );
   }
 
-  _getWeatherData(String location) async {
+  void resetAppState() {
+    setState(() {
+      response = null;
+      inProgress = false;
+      message = "Please search for a valid location to get weather data";
+      isCelsius = true;
+    });
+  }
+
+  void _getWeatherData(String location) async {
     setState(() {
       inProgress = true;
     });
@@ -98,7 +116,7 @@ class _HomePageState extends State<HomePage> {
       response = await WeatherApi().getCurrentWeather(location);
     } catch (e) {
       setState(() {
-        message = "Failed to get weather ";
+        message = "Failed to get weather data";
         response = null;
       });
     } finally {
