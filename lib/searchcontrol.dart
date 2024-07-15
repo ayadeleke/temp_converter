@@ -21,8 +21,7 @@ class SearchBar extends StatelessWidget {
             controller: controller,
             onSubmitted: onSubmitted,
             decoration: InputDecoration(
-              hintText: hintText,
-              // ... decoration code ...
+              hintText: hintText, // ... decoration code ...
             ),
           ),
         ),

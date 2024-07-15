@@ -29,6 +29,7 @@ class _TemperatureConverterState extends State<TemperatureConverter> {
     super.dispose();
   }
 
+/* Temperature converter */
   void convertTemperatures() {
     if (temp1Controller.text.isNotEmpty) {
       double input = double.parse(temp1Controller.text);
@@ -100,9 +101,19 @@ class _TemperatureConverterState extends State<TemperatureConverter> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Conversion History'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: history.map((entry) => Text(entry)).toList(),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: history.reversed.map((entry) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    entry,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                );
+              }).toList(),
+            ),
           ),
           actions: <Widget>[
             TextButton(
